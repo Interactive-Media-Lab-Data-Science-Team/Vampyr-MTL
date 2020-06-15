@@ -23,3 +23,21 @@
 [Clustered Multi-Task Learning: a Convex Formulation](https://papers.nips.cc/paper/3499-clustered-multi-task-learning-a-convex-formulation.pdf)
 
 [Regularized Multi-task Learning](https://dl.acm.org/doi/pdf/10.1145/1014052.1014067)
+
+## Installation
+``pip install -i https://test.pypi.org/simple/ Vampyr-MTL-Max-JJ==0.0.1``
+
+## Package Update
+
+* Manual Deployment:
+
+  - [test-pypi manual](https://packaging.python.org/tutorials/packaging-projects/)
+
+  - ``python3 setup.py sdist bdist_wheel``
+
+  - ``python3 -m twine upload --repository testpypi dist/*``
+
+* Automation(Linux):
+  - deploy: ``./build_deploy.sh``
+  - test: ``./build_deploy.sh --test``
+
