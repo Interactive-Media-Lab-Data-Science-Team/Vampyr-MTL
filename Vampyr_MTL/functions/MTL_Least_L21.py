@@ -1,5 +1,5 @@
 import numpy as np
-from init_opts import init_opts
+from .init_opts import init_opts
 from numpy import linalg as LA
 from tqdm import tqdm
 from tqdm import trange

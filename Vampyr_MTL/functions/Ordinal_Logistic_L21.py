@@ -1,5 +1,5 @@
 import numpy as np
-from init_opts import init_opts
+from .init_opts import init_opts
 from numpy import linalg as LA
 from tqdm import tqdm
 from tqdm import trange
@@ -216,12 +216,17 @@ class MTL_Logistic_L21:
 	def get_params(self, deep = False):
 		return {'rho1':self.rho1, 'opts':self.opts}
 
+	def _trained_parames(self):
+		return self.W, self.funcVal
+
 	def predict(self, X):
 		pred = []
 		for i in range(self.task_num):
 			pp = np.reshape(X[i], (-1, self.dimension)) @ self.W[:, i]
 			pp = 1./(np.exp(-pp)+1)
-			pred.append(pp)
+			p = ((pp-0.5)>0)
+			p = p+0
+			pred.append(p.tolist())
 		return pred
 
 
