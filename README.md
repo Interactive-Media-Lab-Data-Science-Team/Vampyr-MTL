@@ -79,5 +79,6 @@ $ python3 -m venv myenv
 
 $ myenv/Scripts/activate
 
-$ pip3 install -r requirements.txt```
+$ pip3 install -r requirements.txt
+```
 
