@@ -5,7 +5,7 @@
 scikit_learn == 0.22.1
 
 # setup.py: 1
-setuptools == 45.2.0.post20200210
+setuptools == 45.2.0
 
 # Vampyr_MTL\functions\MTL_Least_L21.py: 4,5
 # Vampyr_MTL\functions\Ordinal_Logistic_L21.py: 4,5
