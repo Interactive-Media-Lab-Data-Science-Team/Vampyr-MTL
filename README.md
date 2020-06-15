@@ -4,7 +4,7 @@
 ![Pandas](https://img.shields.io/badge/Pandas-v1.0.4-blue.svg?longCache=true&logo=python&longCache=true&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
 ![Plotly](https://img.shields.io/badge/Plotly-v4.8.1-blue.svg?longCache=true&logo=python&longCache=true&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
 ![Numpy](https://img.shields.io/badge/Numpy-v1.18.0-blue.svg?longCache=true&logo=python&longCache=true&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
-![Scikit-learn](https://img.shields.io/badge/Numpy-v0.23.0-blue.svg?longCache=true&logo=python&longCache=true&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
+![Scikit-learn](https://img.shields.io/badge/sklearn-v0.23.0-blue.svg?longCache=true&logo=python&longCache=true&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
 ![GitHub Last Commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square&colorA=4c566a&colorB=a3be8c)
 ![GitHub Issues](https://img.shields.io/github/issues/Interactive-Media-Lab-Data-Science-Team/Vampyr-MTL)
 ![GitHub Stars](https://img.shields.io/github/stars/Interactive-Media-Lab-Data-Science-Team/Vampyr-MTL)
