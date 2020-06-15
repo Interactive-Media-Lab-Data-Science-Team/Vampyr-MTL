@@ -46,7 +46,7 @@ class MTL_Logistic_L21:
 			m2 = np.count_nonzero(Y[t_idx]==-1)
 			if(m1==0 or m2==0):
 				# inbalanced label
-				C0_prep[t_idx] = 0;
+				C0_prep[t_idx] = 0
 			else:
 				C0_prep[t_idx] = np.log(m1/m2)
 
@@ -64,7 +64,7 @@ class MTL_Logistic_L21:
 			else:
 				W0 = np.zeros((dimension, task_num))
 			if hasattr(self.opts, 'C0'):
-				C0 = opts.C0
+				C0 = self.opts.C0
 			else:
 				C0 = C0_prep
 
