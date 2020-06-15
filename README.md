@@ -11,6 +11,11 @@
   - Multitask Linear Regression
     + Mean Square Error
     + L21 normalization
+* Util Functions:
+  - Train Test Data Split
+    + Split data set inside each task with predefined proportions
+  - Cross Validation with k Folds:
+    + Cross validation with predefined k folds and scoring methods
 
 ## Related Reseaches
 [Accelerated Gredient Method](https://arxiv.org/pdf/1310.3787.pdf)
