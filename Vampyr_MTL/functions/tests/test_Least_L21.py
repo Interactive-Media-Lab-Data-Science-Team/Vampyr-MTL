@@ -30,4 +30,5 @@ class Test_linear_summation(object):
         clf = MTL_Least_L21(opts)
         clf.fit(X, Y, rho=0.0001)
         pred = clf.predict(test)
+        print(pred)
         np.testing.assert_allclose(pred, target, rtol=0.1)

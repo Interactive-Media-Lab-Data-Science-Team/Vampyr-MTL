@@ -10,31 +10,7 @@ class opts:
 		self.init = init
 		self.pFlag = False
 
-opts = opts(1000,0)
-
-task1 = np.array([[1,2,3,4,5],[6,7,8,9,0], [1,2,3,4,6], [1,2,3,4,6], [1,0,1,2,1], [-1,-100,10,20,10], [1,1,-100,100, 1]])
-task2 = np.array([[1,2,3,4,6], [1,2,3,4,6], [10,20,30,40,50], [1000, 0,100, 2,20]])
-task3 = np.array([[4,3,4,3,74], [1,2,1,4,-100], [7,8,90,0,1], [1,2,3,4,-6]])
-X = [task1, task2, task3]
-
-# sum to 16: 0
-y1 = np.array([0, 1, 0, 0, 0, 0, 0])
-y2 = np.array([0, 0, 10, 1])
-y3 = np.array([1, 20, 1, 10])
-Y = [y1, y2, y3]
-
-# first ==1: a, first <=6: b, first >6: c, first <0: d, first >10: e
-y1_c = np.array(['a', 'b', 'a', 'a', 'a', 'd', 'a'])
-y2_c = np.array(['a', 'a', 'c', 'e'])
-y3_c = np.array(['b', 'a', 'c', 'a'])
-Y_c = [y1_c, y2_c, y3_c]
-
-test = []
-test.append(np.array([[2,1,1,1,1], [1,1,1,0,0], [250, 700, 100, 10, 20], [200, 230, 240, -1000, -2000], [1,2,3,4,5]]))
-test.append(np.array([[2,2,5,11,200], [1000, 0, 200, 10, -10]]))
-test.append(np.array([[4,3,4,3,74],[2,1,90,10,220], [2000, 200, 20, 10, 1], [-10, -1, -20, 1, 20], [1000, 2000, 3000, -1, -2], [202, 430, 12, -10, -1000]]))
-target = np.array([[0, 0, 2, 18, 0], [0, 17], [1,0, 0, 0, 3, 0]])
-target_c = np.array([['d', 'd', 'd', 'b', 'd'], ['a', 'd'], ['d', 'd', 'd', 'd', 'd', 'd']])
+opts = opts(1000,2)
 
 ## iris data
 iris = datasets.load_iris()
@@ -63,7 +39,7 @@ X_train_c, X_test_c, Y_train_c, Y_test_c = MTL_data_split(X_i, Y_i, test_size=0.
 class Test_softmax_classification(object):
     def test_soft_numerical_accuracy(self):
         ult_thres = 0.5
-        thres = 0.5
+        thres = 0.9
         its = 10
         succ = 0
         for it in range(its):
@@ -83,11 +59,15 @@ class Test_softmax_classification(object):
                 print("pass with accuracy {}".format(acc))
             else:
                 print("fail with accuracy {}".format(acc))
+                pass
+        print(">>>>>>>>>>>>>>>>>>>>>")
+        print("in total of {} tests, {} passes {} threshold".format(its, acc, thres))
+        print(">>>>>>>>>>>>>>>>>>>>>")
         assert succ/its >=ult_thres
     
     def test_soft_cat_accuracy(self):
         ult_thres = 0.5
-        thres = 0.5
+        thres = 0.9
         its = 10
         succ = 0
         for it in range(its):
@@ -104,7 +84,11 @@ class Test_softmax_classification(object):
             acc = correct/total
             if(acc>thres):
                 succ+=1    
-                print("pass with accuracy {}".format(acc))
+                # print("pass with accuracy {}".format(acc))
             else:
-                print("fail with accuracy {}".format(acc))
+                # print("fail with accuracy {}".format(acc))
+                pass
+        print(">>>>>>>>>>>>>>>>>>>>>")
+        print("in total of {} tests, {} passes {} threshold".format(its, succ/its, thres))
+        print(">>>>>>>>>>>>>>>>>>>>>")
         assert succ/its >=ult_thres
