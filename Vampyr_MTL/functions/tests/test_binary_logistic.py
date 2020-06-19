@@ -29,18 +29,25 @@ target = np.array([[0, 0, 1, 0], [1, 1], [1, 1, 0, 1, 0]])
 
 class Test_linear_classification(object):
     def test_binary_regression_accuracy(self):
-        clf = MTL_Logistic_L21(opts)
-        clf.fit(X, Y, rho=0.00001)
-        # W, loss = clf._trained_parames()
-        # print(loss)
-        pred = clf.predict(test)
-        # np.testing.assert_allclose(pred, target, rtol=0.1)
-        correct = 0
-        total = 0
-        for i, j in zip(target, pred):
-            for k,l in zip(i,j):
-                if(k == l):
-                    correct+=1
-                total+=1
-        print("pass with accuracy {}".format(correct/total))
-        assert correct/total >0.5
+        ult_thres = 0.7
+        thres = 0.5
+        its = 10
+        succ = 0
+        for it in range(its):
+            clf = MTL_Logistic_L21(opts)
+            clf.fit(X, Y, rho=0.00001)
+            pred = clf.predict(test)
+            correct = 0
+            total = 0
+            for i, j in zip(target, pred):
+                for k,l in zip(i,j):
+                    if(k == l):
+                        correct+=1
+                    total+=1
+            acc = correct/total
+            if(acc>thres):
+                succ+=1    
+                print("pass with accuracy {}".format(acc))
+            else:
+                print("fail with accuracy {}".format(acc))
+        assert succ/its >=ult_thres

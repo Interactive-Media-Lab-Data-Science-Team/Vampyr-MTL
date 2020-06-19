@@ -14,7 +14,7 @@
 
 **Vampyr-MTL** is a machine learning python package inspired by [MALSAR](https://github.com/jiayuzhou/MALSAR) multi-task learning Matlab algorithm, combined with up-to-date multi-task learning researches and algorithm for public research purposes.
 
-## Functionality
+## FunctionalityMarkdown Preview EnhancedMarkdown Preview Enhanced
 * Algorithms:
   - Multitask Binary Logistic Regression
     + Hinge Loss 
