@@ -2,13 +2,13 @@ from ..MTL_Softmax_L21_hinge import MTL_Softmax_L21
 import numpy as np
 import pandas as pd
 from sklearn import datasets
-from ...evaluations.utils import MTL_data_extract, MTL_data_split
+from ...evaluations.utils import MTL_data_extract, MTL_data_split, opts
 
-class opts:
-	def __init__(self, maxIter, init):
-		self.maxIter = maxIter
-		self.init = init
-		self.pFlag = False
+# class opts:
+# 	def __init__(self, maxIter, init):
+# 		self.maxIter = maxIter
+# 		self.init = init
+# 		self.pFlag = False
 
 opts = opts(1000,2)
 
@@ -73,15 +73,7 @@ class Test_softmax_classification(object):
         for it in range(its):
             clf = MTL_Softmax_L21(opts)
             clf.fit(X_train_c, Y_train_c, rho=0.00001)
-            pred = clf.predict(X_test_c)
-            correct = 0
-            total = 0
-            for i, j in zip(Y_test_c, pred):
-                for k,l in zip(i,j):
-                    if(k == l):
-                        correct+=1
-                    total+=1
-            acc = correct/total
+            acc = clf.score(X_test_c, Y_test_c)
             if(acc>thres):
                 succ+=1    
                 # print("pass with accuracy {}".format(acc))

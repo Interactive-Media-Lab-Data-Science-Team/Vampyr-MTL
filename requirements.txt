@@ -13,7 +13,7 @@ pytest == 5.3.5
 scikit_learn == 0.22.1
 
 # setup.py: 1
-setuptools == 45.2.0.post20200210
+setuptools == 45.2.0
 
 # Vampyr_MTL\functions\MTL_Least_L21.py: 4,5
 # Vampyr_MTL\functions\MTL_Softmax_L21_hinge.py: 4,5

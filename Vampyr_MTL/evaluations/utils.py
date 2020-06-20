@@ -2,6 +2,12 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 import pandas as pd
 
+class opts:
+	def __init__(self, maxIter, init):
+		self.maxIter = maxIter
+		self.init = init
+		self.pFlag = False
+
 def MTL_data_split(X, Y, test_size=0.4, random_state=0):
 	"""
 		X: shape: t x n x d

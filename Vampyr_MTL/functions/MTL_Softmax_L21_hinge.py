@@ -5,6 +5,8 @@ from tqdm import tqdm
 from tqdm import trange
 import sys
 import time
+from ..evaluations.utils import opts
+
 
 class MTL_Softmax_L21:
 	def __init__(self, opts, rho1=0.01):
@@ -276,6 +278,20 @@ class MTL_Softmax_L21:
 				preds = np.array(temp)
 			pred.append(preds)
 		return pred
+
+	def score(self, X, Y):
+		pred = self.predict(X)
+		correct = 0
+		total = 0
+		for i, j in zip(Y, pred):
+			for k,l in zip(i,j):
+				if(k == l):
+					correct+=1
+				total+=1
+		acc = correct/total
+		return acc
+
+
 
 
 
