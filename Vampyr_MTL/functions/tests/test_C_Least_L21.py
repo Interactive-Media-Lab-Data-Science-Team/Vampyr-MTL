@@ -3,10 +3,12 @@ from ..MTL_Cluster_Least_L21 import MTL_Cluster_Least_L21
 from ...evaluations.utils import MTL_data_extract, MTL_data_split, opts
 import numpy as np
 import math
+from scipy import linalg
+import plotly.express as px
 
 # iris data
 X_train, X_test, Y_train, Y_test, df = get_data()
-opts = opts(1500,2)
+opts = opts(1500,0)
 opts.tol = 10**(-6)
 
 
@@ -51,17 +53,49 @@ for i in range(task_num):
     s= xw.shape
     xw = xw + np.random.randn(s[0]) * nois_var
     Y[i] = np.sign(xw)
-
 class Test_CMTL_Least_classification(object):
+    """Pytest for Cluster Least Classification L21
+
+    Args:
+        object ([type]): entry point for pytest
+    """
+    
+    def test_bsa_ihb(self):
+        """ Test for bsa_ihb function inside CMTL usage
+        """
+        A = np.array([[1,2],[3,4]])
+        EValue, EVector = linalg.eig(A) 
+        Pz = np.real(EVector)
+        # diag_EValue = np.real(np.diagonal(Evalue))
+        diag_EValue = np.real(EValue).reshape((-1,1))
+        clf = MTL_Cluster_Least_L21(opts, 3)
+        
+        x_star, t_star, it = clf.bsa_ihb(diag_EValue, np.ones(diag_EValue.shape), 3, np.ones(diag_EValue.shape))
+        np.testing.assert_array_equal(x_star,
+                              np.array([[0],[0]]))
+        assert np.isnan(t_star) == True
+        assert it == 3
     def test_basic_mat(self):
         clf = MTL_Cluster_Least_L21(opts, 3)
         clf.fit(X, Y)
         corr = clf.analyse()
-        print(corr)
-        
+        # print(corr)
+        fig = px.imshow(corr)
+        fig2 = px.imshow(W)
+        fig.update_layout(
+        title={
+            'text': "predict",
+            })
+        fig.show()
+        fig2.update_layout(
+        title={
+            'text': "real",
+            })
+        fig2.show()
+
     
-    def test_iris_accuracy(self):
-        clf = MTL_Cluster_Least_L21(opts, 3)
-        clf.fit(X_train, Y_train)
-        corr = clf.analyse()
-        print(corr)
+    # def test_iris_accuracy(self):
+    #     clf = MTL_Cluster_Least_L21(opts, 3)
+    #     clf.fit(X_train, Y_train)
+    #     corr = clf.analyse()
+    #     print(corr)
