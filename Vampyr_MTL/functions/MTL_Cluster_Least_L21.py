@@ -11,7 +11,7 @@ from scipy.sparse.linalg import spsolve
 from scipy.sparse import isspmatrix
 
 class MTL_Cluster_Least_L21:
-    def __init__(self, opts, k, rho1=10, rho2=0.2):
+    def __init__(self, opts, k, rho1=10, rho2=0.1):
         self.opts = init_opts(opts)
         self.rho1 = rho1
         self.rho2 = rho2
@@ -44,8 +44,8 @@ class MTL_Cluster_Least_L21:
         self.XY = [0]* self.task_num
         W0_prep = []
         for t in range(self.task_num):
-            self.XY[i] = X[i] @ Y[i]
-            W0_prep.append(self.XY[i].reshape((-1,1)))
+            self.XY[t] = X[t] @ Y[t]
+            W0_prep.append(self.XY[t].reshape((-1,1)))
         W0_prep = np.hstack(W0_prep)
         if hasattr(self.opts,'W0'):
             W0=self.opts.W0
@@ -65,14 +65,14 @@ class MTL_Cluster_Least_L21:
         Wz_old = W0
         Mz = M0.toarray()
         Mz_old = M0.toarray()
-        
+          
         t = 1
         t_old = 0
         
         it = 0
         gamma = 1.0
         gamma_inc = 2
-        
+        # for it in trange(2, file=sys.stdout, desc='outer loop'):
         for it in trange(self.opts.maxIter, file=sys.stdout, desc='outer loop'):
             alpha = (t_old - 1)/t
             Ws = (1 + alpha) * Wz - alpha * Wz_old
@@ -85,9 +85,13 @@ class MTL_Cluster_Least_L21:
             gWs, gMs, Fs = self.gradVal_eval(Ws, Ms)
             
             in_it = 0
+            # for in_it in trange(2,file=sys.stdout, leave=False, unit_scale=True, desc='inner loop'):
             for in_it in trange(1000,file=sys.stdout, leave=False, unit_scale=True, desc='inner loop'):
                 Wzp = Ws - gWs/gamma
                 Mzp, Mzp_Pz, Mzp_DiagSigz = self.singular_projection (Ms - gMs/gamma, self.k)
+                # print(Mzp)
+                # print(Mzp_Pz)
+                # print(Mzp_DiagSigz)
                 Fzp = self.funVal_eval(Wzp, Mzp_Pz, Mzp_DiagSigz)
                 
                 delta_Wzs = Wzp - Ws
@@ -147,7 +151,10 @@ class MTL_Cluster_Least_L21:
             [type]: [description]
         """
         # l2.1 norm projection.
-        EValue, EVector = linalg.eig(Msp) 
+        EValue, EVector = LA.eig(Msp) 
+        idx = EValue.argsort()   
+        EValue = EValue[idx]
+        EVector = EVector[:,idx]
         Pz = np.real(EVector)
         diag_EValue = np.real(EValue)
         DiagSigz, _, _ = self.bsa_ihb(diag_EValue, np.ones(diag_EValue.shape), k, np.ones(diag_EValue.shape))
@@ -224,7 +231,6 @@ class MTL_Cluster_Least_L21:
             grad_W = grad_W + 2 * self.c * invEtaMWt.T
             W2 = W.T @ W
             grad_M = - self.c * W2@linalg.inv(IM)@linalg.inv(IM)
-            
         funcVal = 0
         if self.opts.pFlag:
             pass
@@ -252,15 +258,19 @@ class MTL_Cluster_Least_L21:
     def get_params(self, deep = False):
         return {'rho1':self.rho1, 'rho2':self.rho2,'opts':self.opts, 'k':self.k}
 
+    def get_weights(self):
+        return self.W
+    
     def analyse(self):
         # returns correlation matrix
   
-        # kmCMTL_OrderedModel = np.zeros(self.W.shape)
-        # for i in range(self.k):
-        #     clusModel = self.W[:, i:self.task_num*self.k:self.k]
-        #     kmCMTL_OrderedModel[:, (i)*self.task_num: (i+1)* self.task_num] = clusModel
-        # return 1-np.corrcoef(kmCMTL_OrderedModel)
-        return self.W
+        kmCMTL_OrderedModel = np.zeros(self.W.shape)
+        clus_task_num = self.task_num//self.k
+        for i in range(self.k):
+            clusModel = self.W[:, i:self.task_num:self.k]
+            kmCMTL_OrderedModel[:, (i)*clus_task_num: (i+1)* clus_task_num] = clusModel
+        return 1-np.corrcoef(kmCMTL_OrderedModel)
+        # return self.W
      
 
 
