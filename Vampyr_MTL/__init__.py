@@ -1,3 +1,3 @@
-# from .functions import *
-# from .evaluations import *
-# from .visual import *
+from .functions import *
+from .evaluations import *
+from .visual import *
