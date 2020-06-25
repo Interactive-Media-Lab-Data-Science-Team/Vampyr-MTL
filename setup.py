@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="Vampyr-MTL-Max_JJ",
-    version="0.0.3",
+    version="0.0.4",
     author="Max Jiang",
     author_email="haoyanhy.jiang@mail.utoronto.ca",
     description="A Multi-task Learning Python Package for Academic Uses",
