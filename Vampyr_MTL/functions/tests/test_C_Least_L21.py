@@ -8,7 +8,7 @@ import plotly.express as px
 
 # iris data
 X_train, X_test, Y_train, Y_test, df = get_data()
-opts = opts(1500,0)
+opts = opts(1500,2)
 opts.tol = 10**(-6)
 
 
