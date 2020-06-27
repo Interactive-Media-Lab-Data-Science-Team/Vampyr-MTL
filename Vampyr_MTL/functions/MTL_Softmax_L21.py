@@ -17,10 +17,12 @@ class MTL_Softmax_L21:
 	"""MTL multiclass logistic regression with hinge loss and L21 penalty
 	"""
 	def __init__(self, opts, rho1=0.01):
-		"""
-			rho1: L2,1-norm group Lasso parameter
-			opts: config variables
-		"""
+		"""Initialization of MTL multiclass classification function
+
+        Args:
+            opts (opts): initalization class from opts
+            rho1 (int, optional): L2,1-norm group Lasso parameter. Defaults to 0.01
+        """
 		self.opts = init_opts(opts)
 		self.rho1 = rho1
 		self.rho_L2 = 0
@@ -28,9 +30,17 @@ class MTL_Softmax_L21:
 			rho_L2 = opts.rho_L2
 
 	def fit(self, X, Y, **kwargs):
-		"""
-			X: np.array: t x n x d
-			Y: np.array t x n x 1, as type == int or obj
+		"""Fit with training samples and train
+  
+        t: task number
+        
+        n: number of entries
+        
+        d: data dimension
+
+		Args:
+			X ([np.array(np.array)]): t x n x d.
+            Y ([np.array(np.array)]): t x n x 1.
 		"""
 		
 		self.task_num = len(X)
@@ -190,10 +200,15 @@ class MTL_Softmax_L21:
 		self.funcVal = funcVal
 
 	def FGLasso_projection (self, D, lmbd):
-		'''
-			D: dimension = d x t x m
+		"""Lasso projection for panelties
 
-		'''
+		Args:
+			D (np.array(np.array)): Weight matrix
+			lmbd (int): panelties param
+
+		Returns:
+			(np.array(np.array)): panelties
+		"""
 		# l2.1 norm projection.
 		ss = np.sum(D**2,axis=1)
 		sq = np.sqrt(ss.astype(float))
@@ -203,6 +218,15 @@ class MTL_Softmax_L21:
 
 	# smooth part gradient.
 	def gradVal_eval(self, W, C):
+		"""Gradient Decent
+
+		Args:
+			W (np.array(np.array)): Weight Matrix with shape (d, t)
+			C (np.array): intercept Matrix with shape (t, 1)
+
+		Returns:
+			grad_W (np.array(np.array)): gradient matrix of weight, shape (d, t)
+		"""
 		grad_W = np.zeros((self.dimension, self.task_num, self.encoding))
 		grad_C = np.zeros((self.task_num, self.encoding))
 		lossValVect = np.zeros((1, self.task_num)) 
@@ -219,6 +243,15 @@ class MTL_Softmax_L21:
 			return grad_W, grad_C, funcVal
 
 	def funVal_eval(self, W, C):
+		"""Loss Accumulation
+
+		Args:
+			W ([np.array(np.array)]): weight matrix of shape (n, d, t)
+			C ([np.array]): intercept Matrix with shape (t, n, 1)
+
+		Returns:
+			funcval (float): loss
+		"""
 		funcVal = 0
 		if self.opts.pFlag:
 			# parfor i = 1: task_num
@@ -232,6 +265,15 @@ class MTL_Softmax_L21:
 		return funcVal
 
 	def nonsmooth_eval(self, W, rho_1):
+		"""non-smooth loss evaluation
+
+		Args:
+			W (np.array(np.array)): weight matrix of shape (d, t)
+			rho1 (float): L2,1-norm group Lasso parameter
+
+		Returns:
+			(float): loss 
+		"""
 		non_smooth_value = 0
 		if self.opts.pFlag:
 			pass
@@ -242,6 +284,18 @@ class MTL_Softmax_L21:
 			return non_smooth_value
 
 	def unit_grad_eval(self, w, c, task_idx):
+		"""Gradient decent in individual tasks
+
+		Args:
+			w (np.array): weight matrix of shape (d, 1), corresponding to individual task
+			c (int): intercept Matrix with shape (1), corresponding to individual task
+			task_idx (int): task index
+
+		Returns:
+			(np.array): gradient weight array
+			(int): gradient intercept
+			(int): task individual loss
+		"""
 		weight = np.ones((1, self.Y[task_idx].shape[0]))/self.task_num
 		weighty = 1/self.task_num * self.Y[task_idx]
 		_, n = self.X[task_idx].shape
@@ -255,6 +309,16 @@ class MTL_Softmax_L21:
 		return grad_w, grad_c, funcVal
 
 	def unit_funcVal_eval(self, w, c, task_idx):
+		"""individual loss in each task
+
+		Args:
+			w (np.array): weight matrix of shape (d, 1), corresponding to individual task
+			c (int): intercept Matrix with shape (1), corresponding to individual task
+			task_idx (int): task index
+
+		Returns:
+			(int): individual loss
+		"""
 		weight = np.ones((1, self.Y[task_idx].shape[0]))/self.task_num
 		z = -self.Y[task_idx]*(np.transpose(self.X[task_idx])@w + c)
 		hinge = np.maximum(z, 0)
@@ -262,17 +326,48 @@ class MTL_Softmax_L21:
 		return funcVal
 
 	def get_params(self, deep = False):
+		"""Get inbult initalization params
+
+		Args:
+			deep (bool, optional): deep traverse. Defaults to False.
+
+		Returns:
+			(dict): dictionary of all inits
+		"""
 		return {'rho1':self.rho1, 'opts':self.opts}
 
 	def _trained_parames(self):
+		"""get all trained parameters
+
+		Returns:
+			(tuple): tuple containing: 
+				([np.array(np.array)]): training weight matrix
+				(float): final loss
+		"""
 		return self.W, self.funcVal
 
 	def softmax(self, z):
+		"""Softmax function squash to one dimension
+
+		Args:
+			z (np.array): input array
+
+		Returns:
+			(np.array): out put softmax-ed
+		"""
 		z -= np.max(z)
 		sm = (np.exp(z).T / np.sum(np.exp(z),axis=1)).T
 		return sm
 
 	def predict(self, X):
+		"""Predict with test data
+
+		Args:
+			X [(np.array(np.array))]: input to predict, shape (t, n, d)
+
+		Returns:
+			([np.array()]): predict matrix, shape (t, n ,1)
+		"""
 		pred = []
 		for i in range(self.task_num):
 			pp = np.reshape(X[i], (-1, self.dimension)) @ self.W[:, i]

@@ -301,8 +301,9 @@ class MTL_Logistic_L21:
 		"""get all trained parameters
 
 		Returns:
-			([np.array(np.array)]): training weight matrix
-			(float): final loss
+			(tuple): tuple containing: 
+				([np.array(np.array)]): training weight matrix
+				(float): final loss
 		"""
 		return self.W, self.funcVal
 

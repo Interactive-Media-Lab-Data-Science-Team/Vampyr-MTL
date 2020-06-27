@@ -9,6 +9,5 @@ Welcome to Vampyr-MTL's documentation!
 Indices and tables
 ==================
 
-* :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
