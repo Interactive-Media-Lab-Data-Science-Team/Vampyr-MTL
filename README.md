@@ -32,6 +32,7 @@
     + Extract data from pandas.DataFrame to desired data matrix format, with desired target and task
   - Cross Validation with k Folds:
     + Cross validation with predefined k folds and scoring methods
+    
 more see documentation [*Doc*](https://vampyr-mtl.readthedocs.io/en/latest/)
 
 ## Related Reseaches
