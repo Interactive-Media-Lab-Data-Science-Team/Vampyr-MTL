@@ -67,3 +67,5 @@ tqdm == 4.46.1
 numpy == 1.18.1
 
 sphinxcontrib-napoleon
+
+recommonmark

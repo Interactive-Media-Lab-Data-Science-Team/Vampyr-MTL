@@ -6,6 +6,8 @@ Welcome to Vampyr-MTL's documentation!
 .. toctree::
    :maxdepth: 2
 
+   readme
+
 Indices and tables
 ==================
 

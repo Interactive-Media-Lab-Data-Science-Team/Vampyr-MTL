@@ -33,7 +33,8 @@ release = '0.0.5'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'recommonmark'
+    'recommonmark',
+    'sphinxcontrib.napoleon'
 ]
 
 autodoc_default_flags = ['members']
