@@ -185,9 +185,12 @@ class MTL_Cluster_Least_L21:
 
     def bsa_ihb(self, eig_value, k):  
         """continuous quadratic knapsack problem solve in linear time
+        
         Singular Projection
+        
         min 1/2*||x - eig_value||_2^2
-        s.t. b'*x = k, 0<= x <= u,  b > 0
+        
+        s.t. b'\*x = k, 0<= x <= u,  b > 0
 
         Args:
             eig_value (np.array): eigenvalue of size (d, 1)

@@ -19,7 +19,7 @@ class MTL_Logistic_L21:
 
         Args:
             opts (opts): initalization class from opts
-            rho1 (int, optional): [description]. Defaults to 0.01
+            rho1 (int, optional): L2,1-norm group Lasso parameter. Defaults to 0.01
         """
 		self.opts = init_opts(opts)
 		self.rho1 = rho1
@@ -29,13 +29,16 @@ class MTL_Logistic_L21:
 
 	def fit(self, X, Y, **kwargs):
 		"""Fit with training samples and train
+  
         t: task number
+        
         n: number of entries
+        
         d: data dimension
 
 		Args:
-			X ([np.array(np.array)]): t x n x d
-            Y ([np.array(np.array)]): t x n x 1
+			X ([np.array(np.array)]): t x n x d.
+            Y ([np.array(np.array)]): t x n x 1.
 		"""
 		if 'rho' in kwargs.keys():
 			print(kwargs)
