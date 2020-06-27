@@ -34,8 +34,24 @@ release = '0.0.5'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinxcontrib.napoleon',
+    'sphinx.ext.napoleon',
     'recommonmark'
 ]
+
+# Napoleon settings
+napoleon_google_docstring = True
+napoleon_numpy_docstring = False
+napoleon_include_init_with_doc = False
+napoleon_include_private_with_doc = False
+napoleon_include_special_with_doc = False
+napoleon_use_admonition_for_examples = False
+napoleon_use_admonition_for_notes = False
+napoleon_use_admonition_for_references = False
+napoleon_use_ivar = False
+napoleon_use_param = True
+napoleon_use_rtype = True
+napoleon_use_keyword = True
+napoleon_custom_sections = None
 
 autodoc_default_flags = ['members']
 # Add any paths that contain templates here, relative to this directory.
@@ -48,21 +64,6 @@ exclude_patterns = []
 
 # The master toctree document.
 master_doc = 'index'
-
-# Napoleon settings
-napoleon_google_docstring = True
-napoleon_numpy_docstring = True
-napoleon_include_init_with_doc = False
-napoleon_include_private_with_doc = False
-napoleon_include_special_with_doc = False
-napoleon_use_admonition_for_examples = False
-napoleon_use_admonition_for_notes = False
-napoleon_use_admonition_for_references = False
-napoleon_use_ivar = False
-napoleon_use_param = True
-napoleon_use_rtype = True
-napoleon_use_keyword = True
-napoleon_custom_sections = None
 
 
 # -- Options for HTML output -------------------------------------------------
