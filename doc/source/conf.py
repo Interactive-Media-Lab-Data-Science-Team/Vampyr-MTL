@@ -34,8 +34,6 @@ release = '0.0.5'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinxcontrib.napoleon',
-    'sphinx.ext.napoleon',
-    'recommonmark'
 ]
 
 # Napoleon settings
