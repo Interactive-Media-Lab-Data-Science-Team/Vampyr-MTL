@@ -4,3 +4,5 @@
 Sphinx
 
 sphinx-autobuild
+
+numpy == 1.18.1
