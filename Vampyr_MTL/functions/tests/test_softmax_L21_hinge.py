@@ -1,4 +1,4 @@
-from ..MTL_Softmax_L21_hinge import MTL_Softmax_L21
+from ..MTL_Softmax_L21 import MTL_Softmax_L21
 import numpy as np
 import pandas as pd
 from sklearn import datasets

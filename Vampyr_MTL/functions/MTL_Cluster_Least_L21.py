@@ -1,3 +1,8 @@
+"""
+.. module:: MTL_Cluster_Least_L21
+   :synopsis: MTL Clustered linear regression
+.. moduleauthor:: Max J <https://github.com/DaPraxis>
+"""
 import numpy as np
 from .init_opts import init_opts
 from numpy import linalg as LA
@@ -11,7 +16,17 @@ from scipy.sparse.linalg import spsolve
 from scipy.sparse import isspmatrix
 
 class MTL_Cluster_Least_L21:
+    """Clustered MTL algorithm with least square regression and L21 penalty
+    """
     def __init__(self, opts, k, rho1=10, rho2=0.1):
+        """Initialization of CMTL function
+
+        Args:
+            opts (opts): initalization class from opts
+            k (integer): number of clusters predefined
+            rho1 (int, optional): [description]. Defaults to 10.
+            rho2 (float, optional): [description]. Defaults to 0.1.
+        """
         self.opts = init_opts(opts)
         self.rho1 = rho1
         self.rho2 = rho2
@@ -21,9 +36,14 @@ class MTL_Cluster_Least_L21:
             rho_L2 = opts.rho_L2
     
     def fit(self, X, Y, **kwargs):
-        """
-        X: np.array: t x n x d
-        Y: np.array t x n x 1
+        """Fit with training samples and train
+        t: task number
+        n: number of entries
+        d: data dimension
+
+        Args:
+            X ([np.array]): t x n x d
+            Y ([np.array]): t x n x 1
         """
         if 'rho' in kwargs.keys():
             print(kwargs)
@@ -72,7 +92,7 @@ class MTL_Cluster_Least_L21:
         it = 0
         gamma = 1.0
         gamma_inc = 2
-        # for it in trange(2, file=sys.stdout, desc='outer loop'):
+
         for it in trange(self.opts.maxIter, file=sys.stdout, desc='outer loop'):
             alpha = (t_old - 1)/t
             Ws = (1 + alpha) * Wz - alpha * Wz_old
@@ -89,9 +109,6 @@ class MTL_Cluster_Least_L21:
             for in_it in trange(1000,file=sys.stdout, leave=False, unit_scale=True, desc='inner loop'):
                 Wzp = Ws - gWs/gamma
                 Mzp, Mzp_Pz, Mzp_DiagSigz = self.singular_projection (Ms - gMs/gamma, self.k)
-                # print(Mzp)
-                # print(Mzp_Pz)
-                # print(Mzp_DiagSigz)
                 Fzp = self.funVal_eval(Wzp, Mzp_Pz, Mzp_DiagSigz)
                 
                 delta_Wzs = Wzp - Ws
@@ -141,14 +158,17 @@ class MTL_Cluster_Least_L21:
         self.funcVal = funcVal
     
     def singular_projection (self, Msp, k):
-        """[summary]
+        """Projection of data
 
         Args:
-            Msp ([type]): [description]
-            k ([type]): [description]
+            Msp (np.array(np.array)): M matrix with shape: (t, t)
+            k (int): number of tasks
 
         Returns:
-            [type]: [description]
+            (tuple): tuple containing:   
+                W (np.array(np.array)): weight matrix of shape (d, t)
+                M_Pz (np.array(np.array)): M matrix of shape (t, t)
+                M_DiagSigz (np.array(np.array)): diagnolized M matrix optimized by bsa_ihb
         """
         # l2.1 norm projection.
         EValue, EVector = LA.eig(Msp) 
@@ -157,21 +177,35 @@ class MTL_Cluster_Least_L21:
         EVector = EVector[:,idx]
         Pz = np.real(EVector)
         diag_EValue = np.real(EValue)
-        DiagSigz, _, _ = self.bsa_ihb(diag_EValue, np.ones(diag_EValue.shape), k, np.ones(diag_EValue.shape))
+        DiagSigz, _, _ = self.bsa_ihb(diag_EValue, k)
         Mzp = Pz @ np.diag(DiagSigz) @ Pz.T
         Mzp_Pz = Pz
         Mzp_DiagSigz = DiagSigz
         return Mzp, Mzp_Pz, Mzp_DiagSigz
 
-    def bsa_ihb(self, a, b, r, u):
-        '''
+    def bsa_ihb(self, eig_value, k):  
+        """continuous quadratic knapsack problem solve in linear time
         Singular Projection
-        min 1/2*||x - a||_2^2
-        s.t. b'*x = r, 0<= x <= u,  b > 0
-        '''
+        min 1/2*||x - eig_value||_2^2
+        s.t. b'*x = k, 0<= x <= u,  b > 0
+
+        Args:
+            eig_value (np.array): eigenvalue of size (d, 1)
+            k (int): number of clusters
+
+        Returns:
+            (tuple): tuple containing: 
+                x_star (np.array): optimized solution with Newton's Method, shape (d, 1)
+                t_star (float): intercepts
+                it (int): iteration
+        """   
+        
         break_flag = 0
-        t_l = a/b
-        t_u = (a - u)/b
+        b = np.ones(eig_value.shape)
+        u = np.ones(eig_value.shape)
+        
+        t_l = eig_value/b
+        t_u = (eig_value - u)/b
         T = np.concatenate((t_l, t_u), axis=0)
         t_L = -np.Infinity
         t_U = np.Infinity
@@ -190,12 +224,12 @@ class MTL_Cluster_Least_L21:
             if np.sum(U):
                 g_t += np.sum(b[U]*u[U])
             if np.sum(M):
-                g_t += np.sum(b[M]*(a[M]-t_hat*b[M]))
-            if g_t > r:
+                g_t += np.sum(b[M]*(eig_value[M]-t_hat*b[M]))
+            if g_t > k:
                 t_L = t_hat
                 T = T[T>t_hat]
                 g_tL = g_t
-            elif g_t <r:
+            elif g_t <k:
                 t_U = t_hat
                 T = T[T<t_hat]
                 g_tU = g_t
@@ -205,14 +239,26 @@ class MTL_Cluster_Least_L21:
                 break
         if not break_flag:
             eps = g_tU - g_tL
-            t_star = t_L - (g_tL - r) * (t_U - t_L)/(eps)
-        est = a-t_star * b
+            t_star = t_L - (g_tL - k) * (t_U - t_L)/(eps)
+        est = eig_value-t_star * b
         if(np.isnan(est).any()):
             est[np.isnan(est)] = 0
         x_star = np.minimum(u, np.max(est, 0))
         return x_star, t_star, it
     
     def gradVal_eval(self, W, M):
+        """Gradient Decent
+
+        Args:
+            W (np.array(np.array)): Weight Matrix with shape (d, t)
+            M (np.array(np.array)): M matrix shape (t, t)
+
+        Returns:
+            (tuple): tuple containing: 
+                grad_W (np.array(np.array)): gradient matrix of weight, shape (d, t)
+                grad_M (np.array(np.array)): gradient matrix of M, shape (t, t)
+                funcval (float): loss
+        """
         IM = self.eta * identity(self.task_num)+M
         # could be sparse matrix to solve
         invEtaMWt = linalg.inv(IM) @ W.T
@@ -241,6 +287,16 @@ class MTL_Cluster_Least_L21:
         return grad_W, grad_M, funcVal
 			
     def funVal_eval(self, W, M_Pz, M_DiagSigz):
+        """Loss accumulation
+
+        Args:
+            W (np.array(np.array)): weight matrix of shape (d, t)
+            M_Pz (np.array(np.array)): M matrix of shape (t, t)
+            M_DiagSigz (np.array(np.array)): diagnolized M matrix optimized by bsa_ihb
+
+        Returns:
+            (float): loss
+        """
         invIM = M_Pz @ (np.diag(1/(self.eta + np.array(M_DiagSigz)))) @ M_Pz.T
         invEtaMWt = invIM @ W.T
         funcVal = 0
@@ -256,12 +312,30 @@ class MTL_Cluster_Least_L21:
         return funcVal
 
     def get_params(self, deep = False):
+        """Get inbult initalization params
+
+        Args:
+            deep (bool, optional): deep traverse. Defaults to False.
+
+        Returns:
+            (dict): dictionary of all inits
+        """
         return {'rho1':self.rho1, 'rho2':self.rho2,'opts':self.opts, 'k':self.k}
 
     def get_weights(self):
+        """Get weight matrix
+
+        Returns:
+            (np.array(np.array)): Weight matrix
+        """
         return self.W
     
     def analyse(self):
+        """Analyse weight matrix cross clusters with correlation
+
+        Returns:
+            (np.array(np.array)): correlation map
+        """
         # returns correlation matrix
   
         kmCMTL_OrderedModel = np.zeros(self.W.shape)
@@ -270,7 +344,6 @@ class MTL_Cluster_Least_L21:
             clusModel = self.W[:, i:self.task_num:self.k]
             kmCMTL_OrderedModel[:, (i)*clus_task_num: (i+1)* clus_task_num] = clusModel
         return 1-np.corrcoef(kmCMTL_OrderedModel)
-        # return self.W
      
 
 

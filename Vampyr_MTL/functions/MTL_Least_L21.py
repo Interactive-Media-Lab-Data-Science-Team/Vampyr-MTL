@@ -1,3 +1,8 @@
+"""
+.. module:: MTL_Least_L21
+   :synopsis: MTL linear regression
+.. moduleauthor:: Max J <https://github.com/DaPraxis>
+"""
 import numpy as np
 from .init_opts import init_opts
 from numpy import linalg as LA
@@ -7,11 +12,15 @@ import sys
 import time
 
 class MTL_Least_L21:
+	""" MTL algorithm with least square regression and L21 penalty
+	"""
 	def __init__(self, opts, rho1=0.01):
-		"""
-		rho1: L2,1-norm group Lasso parameter
-		opts: config variables
-		"""
+		"""Initialization of MTL function
+
+        Args:
+            opts (opts): initalization class from opts
+            rho1 (int, optional): [description]. Defaults to 0.01.
+        """
 		self.opts = init_opts(opts)
 		self.rho1 = rho1
 		self.rho_L2 = 0
@@ -19,10 +28,15 @@ class MTL_Least_L21:
 			rho_L2 = opts.rho_L2
 
 	def fit(self, X, Y, **kwargs):
-		"""
-		X: np.array: t x n x d
-		Y: np.array t x n x 1
-		"""
+		"""Fit with training samples and train
+        t: task number
+        n: number of entries
+        d: data dimension
+
+        Args:
+            X ([np.array(np.array)]): t x n x d
+            Y ([np.array(np.array)]): t x n x 1
+        """
 		if 'rho' in kwargs.keys():
 			print(kwargs)
 			self.rho1 = kwargs['rho']
@@ -117,6 +131,15 @@ class MTL_Least_L21:
 		self.funcVal = funcVal
 
 	def FGLasso_projection (self, D, lmbd):
+		"""Lasso projection for panelties
+
+		Args:
+			D (np.array(np.array)): Weight matrix
+			lmbd (int): panelties param
+
+		Returns:
+			(np.array(np.array)): panelties
+		"""
 		# l2.1 norm projection.
 		ss = np.sum(D**2,axis=1)
 		sq = np.sqrt(ss.astype(float))
@@ -125,6 +148,14 @@ class MTL_Least_L21:
 
 	# smooth part gradient.
 	def gradVal_eval(self, W):
+		"""Gradient Decent
+
+			Args:
+				W (np.array(np.array)): Weight Matrix with shape (d, t)
+
+			Returns:
+				grad_W (np.array(np.array)): gradient matrix of weight, shape (d, t)
+        """
 		if self.opts.pFlag:
 			# grad_W = zeros(zeros(W));
 			# parfor i = 1:task_num
@@ -139,6 +170,14 @@ class MTL_Least_L21:
 			return grad_W
 
 	def funVal_eval(self, W):
+		"""Loss accumulation
+
+        Args:
+            W (np.array(np.array)): weight matrix of shape (d, t)
+
+        Returns:
+            funcval (float): loss
+        """
 		funcVal = 0
 		if self.opts.pFlag:
 			# parfor i = 1: task_num
@@ -152,6 +191,15 @@ class MTL_Least_L21:
 		return funcVal
 
 	def nonsmooth_eval(self, W, rho_1):
+		"""non-smooth loss evaluation
+
+		Args:
+			W (np.array(np.array)): weight matrix of shape (d, t)
+			rho1 (float): L2,1-norm group Lasso parameter
+
+		Returns:
+			(float): loss 
+		"""
 		non_smooth_value = 0
 		if self.opts.pFlag:
 			pass
@@ -162,9 +210,25 @@ class MTL_Least_L21:
 			return non_smooth_value
 
 	def get_params(self, deep = False):
+		"""Get inbult initalization params
+
+		Args:
+			deep (bool, optional): deep traverse. Defaults to False.
+
+		Returns:
+			(dict): dictionary of all inits
+		"""
 		return {'rho1':self.rho1, 'opts':self.opts}
 
 	def predict(self, X):
+		"""Predict with test data
+
+		Args:
+			X [(np.array(np.array))]: input to predict, shape (t, n, d)
+
+		Returns:
+			([np.array()]): predict matrix, shape (t, n ,1)
+		"""
 		pred = []
 		for i in range(self.task_num):
 			pred.append(np.reshape(X[i], (-1, self.dimension)) @ self.W[:, i])

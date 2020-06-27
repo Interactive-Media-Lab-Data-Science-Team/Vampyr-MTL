@@ -69,13 +69,14 @@ class Test_CMTL_Least_classification(object):
         # diag_EValue = np.real(np.diagonal(Evalue))
         diag_EValue = np.real(EValue).reshape((-1,1))
         clf = MTL_Cluster_Least_L21(opts, 3)
-        
-        x_star, t_star, it = clf.bsa_ihb(diag_EValue, np.ones(diag_EValue.shape), 3, np.ones(diag_EValue.shape))
+        x_star, t_star, it = clf.bsa_ihb(diag_EValue, 3)
         np.testing.assert_array_equal(x_star,
                               np.array([[0],[0]]))
         assert np.isnan(t_star) == True
         assert it == 3
     def test_basic_mat(self):
+        """Test with basic matrix cases
+        """
         clus_num = 2
         clus_task_num = 10
         task_num = clus_num * clus_task_num
@@ -83,26 +84,28 @@ class Test_CMTL_Least_classification(object):
         clf.fit(X, Y)
         corr = clf.analyse()
         # print(corr)
-        fig = px.imshow(corr, color_continuous_scale='Bluered_r')
-        fig.update_layout(
-        title={
-            'text': "predict",
-            })
-        fig.show()
+        # fig = px.imshow(corr, color_continuous_scale='Bluered_r')
+        # fig.update_layout(
+        # title={
+        #     'text': "predict",
+        #     })
+        # fig.show()
         OrderedTrueModel = np.zeros(W.shape)
         clus_task_num = task_num//clus_num
         for i in range(clus_num):
             clusModel = W[:, i:task_num:clus_num]
             OrderedTrueModel[:, (i)*clus_task_num: (i+1)* clus_task_num] = clusModel
         corr2 = 1-np.corrcoef(OrderedTrueModel)
-        fig2 = px.imshow(corr2, color_continuous_scale='Bluered_r')
-        fig2.update_layout(
-        title={
-            'text': "real",
-            })
-        fig2.show()
+        # fig2 = px.imshow(corr2, color_continuous_scale='Bluered_r')
+        # fig2.update_layout(
+        # title={
+        #     'text': "real",
+        #     })
+        # fig2.show()
 
     def test_check_simplified(self):
+        """Test with simplified version matrix
+        """
         # generate cluster model
         cluster_weight = np.ones((dimension, clus_num))* clus_var
         W = np.tile(cluster_weight, (1, clus_task_num))

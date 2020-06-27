@@ -1,4 +1,4 @@
-from ..Ordinal_Logistic_L21 import MTL_Logistic_L21
+from ..MTL_Logistic_L21 import MTL_Logistic_L21
 import numpy as np
 
 class opts:
@@ -29,6 +29,8 @@ target = np.array([[0, 0, 1, 0], [1, 1], [1, 1, 0, 1, 0]])
 
 class Test_linear_classification(object):
     def test_binary_regression_accuracy(self):
+        """Test with self identified matrix, structured for unstable cases
+        """
         ult_thres = 0.7
         thres = 0.5
         its = 10
