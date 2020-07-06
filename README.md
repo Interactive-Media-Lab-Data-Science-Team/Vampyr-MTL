@@ -17,7 +17,7 @@
 ## [Demo](https://colab.research.google.com/drive/1SVMAEnu1Jk4ldvUqI5iuA7D1zlxXrLrr?usp=sharing)
 Demo for runing Clustered Multitask Learning algorithm with risk factor analysis, pls copy to your playground and do not ask for change authorizations
 
-## FunctionalityMarkdown Preview EnhancedMarkdown Preview Enhanced
+## Functionality
 * Algorithms:
   - Multitask Binary Logistic Regression
     + Hinge Loss 
