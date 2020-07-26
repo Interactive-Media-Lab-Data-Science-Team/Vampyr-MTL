@@ -15,7 +15,10 @@
 
 **Vampyr-MTL** is a machine learning python package inspired by [MALSAR](https://github.com/jiayuzhou/MALSAR) multi-task learning Matlab algorithm, combined with up-to-date multi-task learning researches and algorithm for public research purposes.
 
-## FunctionalityMarkdown Preview EnhancedMarkdown Preview Enhanced
+## [Demo](https://colab.research.google.com/drive/1SVMAEnu1Jk4ldvUqI5iuA7D1zlxXrLrr?usp=sharing)
+Demo for runing Clustered Multitask Learning algorithm with risk factor analysis, pls copy to your playground and do not ask for change authorizations
+
+## Functionality
 * Algorithms:
   - Multitask Binary Logistic Regression
     + Hinge Loss 
@@ -33,7 +36,7 @@
   - Cross Validation with k Folds:
     + Cross validation with predefined k folds and scoring methods
     
-more see documentation [*Doc*](https://vampyr-mtl.readthedocs.io/en/latest/)
+more see [*Documentation*](https://vampyr-mtl.readthedocs.io/en/latest/)
 
 ## Related Reseaches
 [Accelerated Gredient Method](https://arxiv.org/pdf/1310.3787.pdf)
@@ -42,7 +45,7 @@ more see documentation [*Doc*](https://vampyr-mtl.readthedocs.io/en/latest/)
 
 [Regularized Multi-task Learning](https://dl.acm.org/doi/pdf/10.1145/1014052.1014067)
 
-## Installation
+## Installation (test version)
 ``pip install -i https://test.pypi.org/simple/ Vampyr-MTL-Max-JJ==0.0.5``
 
 ## Dependency
@@ -102,3 +105,4 @@ powered by Sphinx with Google comment style, compile with napoleon:
 ```
 sphinx-apidoc -f -o docs/source Vampyr_MTL
 ```
+
