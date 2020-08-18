@@ -1,4 +1,4 @@
-# Vampyr-MTL
+# Multi-Med-Task Learning(MMTL)
 
 ![Python](https://img.shields.io/badge/Python-^3.6-blue.svg?logo=python&longCache=true&logoColor=white&colorB=5e81ac&style=flat-square&colorA=4c566a)
 ![Pandas](https://img.shields.io/badge/Pandas-v1.0.4-blue.svg?longCache=true&logo=python&longCache=true&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
