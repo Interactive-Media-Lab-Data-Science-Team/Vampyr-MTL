@@ -1,5 +1,4 @@
-# MD-MTL
-
+# MD-MTL: An Ensemble Med-Multi-Task Learning Package
 ![Python](https://img.shields.io/badge/Python-^3.6-blue.svg?logo=python&longCache=true&logoColor=white&colorB=5e81ac&style=flat-square&colorA=4c566a)
 ![Pandas](https://img.shields.io/badge/Pandas-v1.0.4-blue.svg?longCache=true&logo=python&longCache=true&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
 ![Plotly](https://img.shields.io/badge/Plotly-v4.8.1-blue.svg?longCache=true&logo=python&longCache=true&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
@@ -12,8 +11,6 @@
 ![Github License](https://img.shields.io/github/license/Interactive-Media-Lab-Data-Science-Team/Vampyr-MTL)
 ---
 ![Vampire Squid](/package_info/logo_large.png "Vampyr Inspiration")
-
-**MD-MTL: An Ensemble Med-Multi-Task Learning Package** 
 
 **MD-MTL** is a machine learning python package inspired by [MALSAR](https://github.com/jiayuzhou/MALSAR) multi-task learning Matlab algorithm, combined with up-to-date multi-task learning researches and algorithm for public research purposes.
 
