@@ -4,11 +4,11 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="Vampyr-MTL-Max_JJ",
-    version="0.0.5",
+    name="MD-MTL",
+    version="0.0.6",
     author="Max Jiang",
     author_email="haoyanhy.jiang@mail.utoronto.ca",
-    description="A Multi-task Learning Python Package for Academic Uses",
+    description="An Ensemble Med-Multi-Task Learning Package",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Interactive-Media-Lab-Data-Science-Team/Vampyr-MTL",
