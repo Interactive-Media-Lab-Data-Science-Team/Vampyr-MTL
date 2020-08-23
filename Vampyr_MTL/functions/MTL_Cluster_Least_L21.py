@@ -93,7 +93,7 @@ class MTL_Cluster_Least_L21:
         gamma = 1.0
         gamma_inc = 2
 
-        for it in trange(self.opts.maxIter, file=sys.stdout, desc='outer loop'):
+        for it in trange(self.opts.maxIter, file=sys.stdout, desc='Training'):
             alpha = (t_old - 1)/t
             Ws = (1 + alpha) * Wz - alpha * Wz_old
             if(isspmatrix(Mz)):
@@ -106,7 +106,7 @@ class MTL_Cluster_Least_L21:
             
             in_it = 0
             # for in_it in trange(2,file=sys.stdout, leave=False, unit_scale=True, desc='inner loop'):
-            for in_it in trange(1000,file=sys.stdout, leave=False, unit_scale=True, desc='inner loop'):
+            while True:
                 Wzp = Ws - gWs/gamma
                 Mzp, Mzp_Pz, Mzp_DiagSigz = self.singular_projection (Ms - gMs/gamma, self.k)
                 Fzp = self.funVal_eval(Wzp, Mzp_Pz, Mzp_DiagSigz)

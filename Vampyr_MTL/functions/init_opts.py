@@ -8,7 +8,7 @@ def init_opts(opts):
 
 	# Default values
 	DEFAULT_MAX_ITERATION = 1000
-	DEFAULT_TOLERANCE     = 1e-4
+	DEFAULT_TOLERANCE     = 1e-10
 	MINIMUM_TOLERANCE     = eps * 100
 	DEFAULT_TERMINATION_COND = 1
 	DEFAULT_INIT = 0

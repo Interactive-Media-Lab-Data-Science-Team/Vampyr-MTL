@@ -99,7 +99,7 @@ class MTL_Logistic_L21:
 		gamma = 1
 		gamma_inc = 2
 
-		for it in trange(self.opts.maxIter, file=sys.stdout, desc='outer loop'):
+		for it in trange(self.opts.maxIter, file=sys.stdout, desc='Training'):
 			alpha = (t_old - 1)/t
 
 			Ws = (1 + alpha) * Wz - alpha * Wz_old
@@ -107,7 +107,7 @@ class MTL_Logistic_L21:
 
 			gWs, gCs, Fs = self.gradVal_eval(Ws, Cs)
 
-			for in_it in trange(1000,file=sys.stdout, leave=False, unit_scale=True, desc='inner loop'):
+			while True:
 				Wzp = self.FGLasso_projection(Ws - gWs/gamma, self.rho1 / gamma)
 				Czp = Cs - gCs/gamma
 				Fzp = self.funVal_eval(Wzp, Czp)

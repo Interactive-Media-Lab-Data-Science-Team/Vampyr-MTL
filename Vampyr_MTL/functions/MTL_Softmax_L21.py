@@ -136,7 +136,7 @@ class MTL_Softmax_L21:
 		gamma = 1
 		gamma_inc = 2
 
-		for it in trange(self.opts.maxIter, file=sys.stdout, desc='outer loop'):
+		for it in trange(self.opts.maxIter, file=sys.stdout, desc='Training'):
 			alpha = (t_old - 1)/t
 
 			Ws = (1 + alpha) * Wz - alpha * Wz_old
@@ -144,7 +144,7 @@ class MTL_Softmax_L21:
 
 			gWs, gCs, Fs = self.gradVal_eval(Ws, Cs)
 
-			for in_it in trange(1000,file=sys.stdout, leave=False, unit_scale=True, desc='inner loop'):
+			while True:
 				Wzp = self.FGLasso_projection(Ws - gWs/gamma, self.rho1 / gamma)
 				Czp = Cs - gCs/gamma
 				Fzp = self.funVal_eval(Wzp, Czp)
@@ -156,7 +156,7 @@ class MTL_Softmax_L21:
 				r_sum = (nrm_delta_Czp + nrm_delta_Wzp)/2
 
 				Fzp_gamma = Fs + np.sum(delta_Wzp*gWs) + np.sum(delta_Czp*gCs)+ gamma/2 * r_sum*2
-				if (r_sum <=1e-20):
+				if (r_sum <=1e-28):
 					bFlag=1 # this shows that, the gradient step makes little improvement
 					break
 				if (Fzp <= Fzp_gamma):
@@ -178,19 +178,23 @@ class MTL_Softmax_L21:
 			if(self.opts.tFlag == 0):
 				if it>=2:
 					if (abs( funcVal[-1] - funcVal[-2]) <= self.opts.tol):
+						print("Terminate 0")
 						break
 					
 			elif(self.opts.tFlag == 1):
 				if it>=2:
 					if (abs( funcVal[-1] - funcVal[-2] ) <= self.opts.tol* funcVal[-2]):
+						print("Terminate 1")
 						break
 					
 			elif(self.opts.tFlag == 2):
 				if ( funcVal[-1]<= self.opts.tol):
+					print("Terminate 2")
 					break
 				
 			elif(self.opts.tFlag == 3):
 				if it>=self.opts.maxIter:
+					print("Terminate 3")
 					break
 			
 			t_old = t
@@ -322,7 +326,7 @@ class MTL_Softmax_L21:
 		weight = np.ones((1, self.Y[task_idx].shape[0]))/self.task_num
 		z = -self.Y[task_idx]*(np.transpose(self.X[task_idx])@w + c)
 		hinge = np.maximum(z, 0)
-		funcVal = np.sum(weight @ (np.log(np.exp(-hinge)+np.exp(z-hinge))+hinge))
+		funcVal = np.sum(weight @ (np.log(np.exp((-hinge).astype(np.float))+np.exp((z-hinge).astype(np.float)))+hinge))
 		return funcVal
 
 	def get_params(self, deep = False):

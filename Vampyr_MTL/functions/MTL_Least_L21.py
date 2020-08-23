@@ -79,7 +79,7 @@ class MTL_Least_L21:
 		gamma = 1
 		gamma_inc = 2
 
-		for it in trange(self.opts.maxIter, file=sys.stdout, desc='outer loop'):
+		for it in trange(self.opts.maxIter, file=sys.stdout, desc='Training'):
 			alpha = (t_old - 1)/t
 			Ws = (1 + alpha) * Wz - alpha * Wz_old
 			# compute function value and gradients of the search point
@@ -87,7 +87,7 @@ class MTL_Least_L21:
 			Fs = self.funVal_eval(Ws)
 			in_it = 0
 
-			for in_it in trange(1000,file=sys.stdout, leave=False, unit_scale=True, desc='inner loop'):
+			while True:
 				Wzp = self.FGLasso_projection(Ws - gWs/gamma, self.rho1 / gamma)
 				Fzp = self.funVal_eval(Wzp)
 				delta_Wzp = Wzp - Ws
