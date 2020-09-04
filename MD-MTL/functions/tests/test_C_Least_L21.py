@@ -1,6 +1,6 @@
 from .test_data import get_data
 from ..MTL_Cluster_Least_L21 import MTL_Cluster_Least_L21
-from ...evaluations.utils import MTL_data_extract, MTL_data_split, opts
+from ..utils import MTL_data_extract, MTL_data_split, opts
 import numpy as np
 import math
 from scipy import linalg

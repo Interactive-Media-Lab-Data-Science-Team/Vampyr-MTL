@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from sklearn import datasets
-from ...evaluations.utils import MTL_data_extract, MTL_data_split, opts
+from ..utils import MTL_data_extract, MTL_data_split, opts
 
 
 def get_data():

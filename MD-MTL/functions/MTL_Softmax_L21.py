@@ -10,7 +10,6 @@ from tqdm import tqdm
 from tqdm import trange
 import sys
 import time
-from ..evaluations.utils import opts
 
 
 class MTL_Softmax_L21:
