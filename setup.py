@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="MD-MTL",
-    version="0.0.6",
+    version="0.0.7",
     author="Max Jiang",
     author_email="haoyanhy.jiang@mail.utoronto.ca",
     description="An Ensemble Med-Multi-Task Learning Package",
