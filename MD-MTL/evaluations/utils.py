@@ -107,6 +107,7 @@ def RFA(df, tasks, mtl_clf, target, top=10):
         
     all_col = (df.loc[:, (df.columns != target)&(df.columns != tasks)].columns).tolist()
     df_v, all_tasks, total, df_v2, RFA, index = reformat(all_col, mtl_clf.W, top=top)
+    fet, task = mtl_clf.W.shape
     mp = {i+1:"Task_{}".format(i) for i in range(task)}
     mp[None] = ''
     mp[np.nan] = ''
