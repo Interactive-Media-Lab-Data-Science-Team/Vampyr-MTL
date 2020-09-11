@@ -3,12 +3,14 @@ import numpy as np
 import pandas as pd
 from collections import defaultdict, OrderedDict
 import plotly.figure_factory as ff
+from sklearn.cluster import DBSCAN
 
 class opts:
 	def __init__(self, maxIter, init):
 		self.maxIter = maxIter
 		self.init = init
 		self.pFlag = False
+  
 
 def MTL_data_split(X, Y, test_size=0.4, random_state=0):
 	"""
@@ -27,6 +29,11 @@ def MTL_data_split(X, Y, test_size=0.4, random_state=0):
 		y_train.append(y_train_s.flatten())
 		y_test.append(y_test_s.flatten())
 	return X_train, X_test, y_train, y_test
+
+def MTL_ClusterBoosted_data_extract_auto(df, target_feat, clf = DBSCAN()):
+    db = clf.fit(df.values)
+    df['t_target'] = db.labels_
+    return MTL_data_extract(df, 't_target', target_feat)
 
 def MTL_data_extract(df, task_feat, target):
 	'''
