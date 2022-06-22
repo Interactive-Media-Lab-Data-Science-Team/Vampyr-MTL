@@ -64,7 +64,7 @@ tqdm == 4.46.1
 # build\lib\Vampyr_MTL\functions\tests\test_binary_logistic.py: 2
 # build\lib\Vampyr_MTL\functions\tests\test_data.py: 1
 # build\lib\Vampyr_MTL\functions\tests\test_softmax_L21_hinge.py: 2
-numpy == 1.18.1
+numpy == 1.22.0
 
 sphinxcontrib-napoleon
 
